@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="uk">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Групи: що очікують від школи</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <style>
+    /* VOICE: дружній, робочий, для вчителів на тренінгу — чітко і без зайвого
+   IDEA: коркова дошка з чотирма кольоровими стікерами-групами, як у Padlet
+   PICTURE: самі чотири стікери — великі, з малюнком групи, ними й переходять
+   COLOUR and TYPE: теплий корковий фон, стікери синій/жовтий/рожевий/зелений, Rubik
+   LAYOUT: заголовок і три кроки зверху, сітка 2×2 стікерів, на телефоні в стовпчик */
+    :root {
+      color-scheme: light dark;
+      --bg: light-dark(#e9d9bf, #2a2118);
+      --dots: light-dark(#d9c4a1, #3a2e22);
+      --ink: light-dark(#2b2118, #f4ead9);
+      --soft: light-dark(#5c4a38, #cdbca4);
+      --paper: light-dark(#fffaf1, #3a2f24);
+      --c1: #2f6fd6;
+      --c1b: light-dark(#dbe8ff, #1d3157);
+      --c2: #e9a400;
+      --c2b: light-dark(#fff1c7, #4a3a10);
+      --c3: #d6407a;
+      --c3b: light-dark(#ffdbe8, #4c1d30);
+      --c4: #2e9a5a;
+      --c4b: light-dark(#d6f3e2, #173c27)
+    }
+
+    :root[data-theme=light] {
+      color-scheme: light
+    }
+
+    :root[data-theme=dark] {
+      color-scheme: dark
+    }
+
+    * {
+      box-sizing: border-box;
+      min-width: 0
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      background-image: radial-gradient(var(--dots) 1.4px, transparent 1.6px);
+      background-size: 14px 14px;
+      color: var(--ink);
+      font: 16px/1.55 Rubik, system-ui, sans-serif;
+      overflow-x: clip
+    }
+
+    .wrap {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: clamp(12px, 2vw, 22px) max(4vw, 16px) 20px
+    }
+
+    h1 {
+      font-size: clamp(28px, 4vw, 42px);
+      line-height: 1.05;
+      font-weight: 800;
+      margin: 0 0 10px;
+      text-wrap: balance;
+      text-transform: uppercase;
+    }
+
+    .intro {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 12px;
+      margin: 0 0 20px
+    }
+
+    .bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 12px 16px
+    }
+
+    .steps li {
+      font-size: 15px
+    }
+
+    .sub {
+      color: var(--soft);
+      margin: 0;
+      flex: none;
+      max-width: none
+    }
+
+    .time {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 10px;
+      flex: none;
+      padding: 12px 22px 12px 16px;
+      border-radius: 14px;
+      background: #d6281f;
+      color: #fff;
+      font-size: clamp(17px, 1.6vw, 19px);
+      font-weight: 500;
+      box-shadow: 0 10px 20px -12px rgba(120, 20, 10, .6)
+    }
+
+    .time svg {
+      width: 30px;
+      height: 30px;
+      flex: none
+    }
+
+    .time b {
+      font-weight: 800
+    }
+
+    .steps {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 0;
+      padding: 0;
+      list-style: none
+    }
+
+    .steps li {
+      background: var(--paper);
+      border-radius: 999px;
+      padding: 8px 16px 8px 8px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 500;
+      box-shadow: 0 2px 0 rgba(0, 0, 0, .08)
+    }
+
+    .steps b {
+      display: grid;
+      place-items: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--ink);
+      color: var(--paper);
+      font-size: 14px
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: clamp(14px, 2vw, 24px);
+      margin-top: 30px
+    }
+
+    .note {
+      --c: var(--c1);
+      --cb: var(--c1b);
+      position: relative;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 16px;
+      align-items: center;
+      background: var(--cb);
+      color: var(--ink);
+      text-decoration: none;
+      border-radius: 6px 6px 22px 6px;
+      padding: 24px;
+      box-shadow: 0 1px 0 rgba(0, 0, 0, .06), 0 14px 24px -14px rgba(60, 35, 10, .45);
+      transition: transform .18s, box-shadow .18s
+    }
+
+    .note:nth-child(odd) {
+      transform: rotate(-.6deg)
+    }
+
+    .note:nth-child(even) {
+      transform: rotate(.7deg)
+    }
+
+    .note::before {
+      content: "";
+      position: absolute;
+      top: -9px;
+      left: 50%;
+      width: 22px;
+      height: 22px;
+      margin-left: -11px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 30%, #fff8 0 3px, transparent 4px), var(--c);
+      box-shadow: 0 3px 3px rgba(0, 0, 0, .25)
+    }
+
+    .note:hover,
+    .note:focus-visible {
+      transform: rotate(0) translateY(-4px);
+      box-shadow: 0 1px 0 rgba(0, 0, 0, .06), 0 22px 30px -14px rgba(60, 35, 10, .55)
+    }
+
+    .note:focus-visible {
+      outline: 3px solid var(--c);
+      outline-offset: 4px
+    }
+
+    .num {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--c);
+      text-transform: none;
+      margin-bottom: 4px
+    }
+
+    .note h2 {
+      margin: 0 0 6px;
+      font-size: clamp(22px, 2.6vw, 28px);
+      line-height: 1.1;
+      font-weight: 800
+    }
+
+    .note p {
+      margin: 0 0 12px;
+      color: var(--soft);
+      font-size: 15px
+    }
+
+    .go {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 44px;
+      padding: 0 18px;
+      border-radius: 999px;
+      background: var(--c);
+      color: #fff;
+      font-weight: 700
+    }
+
+    .go svg {
+      width: 18px;
+      height: 18px
+    }
+
+    .ico {
+      width: clamp(72px, 9vw, 100px);
+      height: auto
+    }
+
+    .n1 {
+      --c: var(--c1);
+      --cb: var(--c1b)
+    }
+
+    .n2 {
+      --c: #b97f00;
+      --cb: var(--c2b)
+    }
+
+    .n3 {
+      --c: var(--c3);
+      --cb: var(--c3b)
+    }
+
+    .n4 {
+      --c: var(--c4);
+      --cb: var(--c4b)
+    }
+
+    :root:not([data-theme=light]) .n2 {
+      --c: light-dark(#b97f00, #f0b62b)
+    }
+
+    .n2 .go {
+      background: #b37a00;
+      color: #fff
+    }
+
+    .after {
+      margin-top: 34px;
+      background: var(--paper);
+      border-radius: 14px;
+      padding: 18px 22px;
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      flex-wrap: wrap
+    }
+
+    .after svg {
+      width: 42px;
+      height: 42px;
+      flex: none
+    }
+
+    .after p {
+      margin: 0;
+      flex: 1 1 280px
+    }
+
+    .all {
+      color: var(--soft);
+      font-size: 14px;
+      text-decoration: none;
+      border-bottom: 1px dashed currentColor
+    }
+
+    /* режим однієї групи (#ministerstvo тощо) */
+    .solo .grid {
+      grid-template-columns: minmax(0, 640px);
+      justify-content: center
+    }
+
+    .solo .note {
+      min-height: 260px
+    }
+
+    .solo .note:not(.on) {
+      display: none
+    }
+
+    .solo .steps,
+    .solo .hint {
+      display: none
+    }
+
+    .back {
+      display: none;
+      margin: 18px auto 0;
+      width: max-content;
+      color: var(--soft)
+    }
+
+    .solo .back {
+      display: block
+    }
+
+    .hint {
+      margin: 14px 0 0;
+      color: var(--soft);
+      font-size: 14px
+    }
+
+    /* анімація: наведення й натискання */
+    .go {
+      position: relative;
+      overflow: hidden;
+      transition: transform .2s cubic-bezier(.3, 1.6, .5, 1), box-shadow .2s
+    }
+
+    .go svg {
+      transition: transform .25s
+    }
+
+    .go::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -60%;
+      width: 45%;
+      height: 100%;
+      background: linear-gradient(100deg, transparent, rgba(255, 255, 255, .55), transparent);
+      transform: skewX(-20deg);
+      pointer-events: none
+    }
+
+    .note:hover .go,
+    .note:focus-visible .go {
+      transform: scale(1.06);
+      box-shadow: 0 10px 18px -8px var(--c)
+    }
+
+    .note:hover .go svg,
+    .note:focus-visible .go svg {
+      transform: translateX(5px)
+    }
+
+    .note:hover .go::after {
+      animation: shine .8s ease
+    }
+
+    .note:hover .ico {
+      animation: bob .7s ease
+    }
+
+    .note:hover::before {
+      animation: pin .5s ease
+    }
+
+    .note:active {
+      transform: scale(.96);
+      transition-duration: .08s;
+      box-shadow: 0 1px 0 rgba(0, 0, 0, .06), 0 6px 12px -8px rgba(60, 35, 10, .5)
+    }
+
+    .note:active .go {
+      transform: scale(.92);
+      transition-duration: .08s
+    }
+
+    .fx {
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      overflow: hidden;
+      pointer-events: none
+    }
+
+    .rip {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      margin: -10px 0 0 -10px;
+      border-radius: 50%;
+      background: var(--c);
+      opacity: .35;
+      transform: scale(0);
+      animation: rip .65s ease-out forwards
+    }
+
+    @keyframes shine {
+      to {
+        left: 130%
+      }
+    }
+
+    @keyframes bob {
+
+      0%,
+      100% {
+        transform: translateY(0) rotate(0)
+      }
+
+      30% {
+        transform: translateY(-8px) rotate(-6deg)
+      }
+
+      60% {
+        transform: translateY(0) rotate(4deg)
+      }
+
+      80% {
+        transform: translateY(-3px) rotate(0)
+      }
+    }
+
+    @keyframes pin {
+
+      0%,
+      100% {
+        transform: translateY(0)
+      }
+
+      40% {
+        transform: translateY(-5px)
+      }
+    }
+
+    @keyframes rip {
+      to {
+        transform: scale(40);
+        opacity: 0
+      }
+    }
+
+    @media(max-height:720px) and (min-width:701px) {
+      .wrap {
+        padding-bottom: 8px
+      }
+
+      h1 {
+        font-size: 34px;
+        margin-bottom: 6px
+      }
+
+      .intro {
+        margin-bottom: 12px
+      }
+
+      .steps li {
+        padding-block: 5px
+      }
+
+      .note {
+        padding: 16px 20px 14px
+      }
+
+      .note p {
+        margin-bottom: 10px;
+        font-size: 14px
+      }
+
+      .ico {
+        width: 80px
+      }
+
+      .time {
+        padding-block: 9px
+      }
+    }
+
+    @media(max-width:700px) {
+      .grid {
+        grid-template-columns: minmax(0, 1fr)
+      }
+
+      .note {
+        min-height: 0
+      }
+    }
+
+    @media(max-width:420px) {
+      .note {
+        grid-template-columns: minmax(0, 1fr)
+      }
+
+      .ico {
+        order: -1;
+        width: 70px
+      }
+    }
+
+    @media(prefers-reduced-motion:reduce) {
+
+      .note,
+      .go,
+      .go svg {
+        transition: none
+      }
+
+      .note:nth-child(n) {
+        transform: none
+      }
+
+      .note *,
+      .note::before {
+        animation: none !important
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="wrap" id="app">
+    <h1>Що очікують від закладу освіти?</h1>
+    <div class="intro">
+      <p class="sub">Групова робота учасників тренінгу «Використання можливостей платформи ВШО в освітньому процесі
+        сьогодення України». Натисніть картку своєї групи — відкриється лише ваш розділ дошки Padlet.</p>
+      <div class="bar">
+        <div class="time">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"
+            stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="13" r="8" />
+            <path d="M12 9v4l2.5 2.5M9 2h6" />
+          </svg>
+          <span>Час на роботу в групах — <b>10 хвилин</b></span>
+        </div>
+        <ol class="steps">
+          <li><b>1</b>Оберіть групу</li>
+          <li><b>2</b>Додайте дописи</li>
+          <li><b>3</b>Поверніться в загальний зал</li>
+        </ol>
+      </div>
+    </div>
+    <section class="grid" id="grid">
+      <a class="note n1" id="ministerstvo"
+        href="https://padlet.com/viktorpendalchuk/breakout-room/6RDZ2ybJp0Mxqyej-oAdpz2J3ekQ5z10R" target="_blank"
+        rel="noopener">
+        <div>
+          <div class="num">Група 1</div>
+          <h2>Міністерство освіти</h2>
+          <p>Що очікує держава від закладу освіти: стандарти, результати, політики.</p>
+          <span class="go">Перейти до розділу <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 12h14M13 6l6 6-6 6" />
+            </svg></span>
+        </div>
+        <svg class="ico" viewBox="0 0 100 100" aria-hidden="true">
+          <ellipse cx="50" cy="90" rx="40" ry="5" fill="#000" opacity=".12" />
+          <path d="M14 34 50 14l36 20z" fill="#2f6fd6" />
+          <path d="M14 34h72v6H14z" fill="#1f56ad" />
+          <g fill="#fff" stroke="#1f56ad" stroke-width="2">
+            <rect x="22" y="42" width="9" height="36" rx="2" />
+            <rect x="38" y="42" width="9" height="36" rx="2" />
+            <rect x="53" y="42" width="9" height="36" rx="2" />
+            <rect x="69" y="42" width="9" height="36" rx="2" />
+          </g>
+          <rect x="12" y="78" width="76" height="9" rx="2" fill="#1f56ad" />
+          <circle cx="50" cy="27" r="4" fill="#ffd34d" />
+        </svg>
+      </a>
+
+      <a class="note n2" id="suspilstvo"
+        href="https://padlet.com/viktorpendalchuk/breakout-room/olbw237zr5xG2L30-oAdpz2J3ekQ5z10R" target="_blank"
+        rel="noopener">
+        <div>
+          <div class="num">Група 2</div>
+          <h2>Суспільство в цілому</h2>
+          <p>Яких громадян, фахівців і людей чекає від школи громада та країна.</p>
+          <span class="go">Перейти до розділу <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 12h14M13 6l6 6-6 6" />
+            </svg></span>
+        </div>
+        <svg class="ico" viewBox="0 0 100 100" aria-hidden="true">
+          <ellipse cx="50" cy="90" rx="40" ry="5" fill="#000" opacity=".12" />
+          <circle cx="50" cy="48" r="34" fill="#e9a400" />
+          <path d="M22 40c10 4 14-6 22-2s4 14 14 12 10-12 20-6" fill="none" stroke="#fff6d8" stroke-width="5"
+            stroke-linecap="round" />
+          <path d="M24 62c12-2 16 6 28 2s14-8 24-2" fill="none" stroke="#fff6d8" stroke-width="5"
+            stroke-linecap="round" />
+          <g fill="#2b2118">
+            <circle cx="26" cy="80" r="6" />
+            <circle cx="50" cy="78" r="7" />
+            <circle cx="74" cy="80" r="6" />
+          </g>
+        </svg>
+      </a>
+
+      <a class="note n3" id="batky"
+        href="https://padlet.com/viktorpendalchuk/breakout-room/gx604eeobMjX4YGo-oAdpz2J3ekQ5z10R" target="_blank"
+        rel="noopener">
+        <div>
+          <div class="num">Група 3</div>
+          <h2>Батьки учнів</h2>
+          <p>Що важливо для родин: безпека, якість навчання, комунікація з вчителями.</p>
+          <span class="go">Перейти до розділу <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 12h14M13 6l6 6-6 6" />
+            </svg></span>
+        </div>
+        <svg class="ico" viewBox="0 0 100 100" aria-hidden="true">
+          <ellipse cx="50" cy="90" rx="40" ry="5" fill="#000" opacity=".12" />
+          <circle cx="32" cy="30" r="11" fill="#d6407a" />
+          <path d="M14 86V62a18 18 0 0 1 36 0v24z" fill="#d6407a" />
+          <circle cx="68" cy="30" r="11" fill="#a82a5c" />
+          <path d="M50 86V62a18 18 0 0 1 36 0v24z" fill="#a82a5c" />
+          <circle cx="50" cy="56" r="8" fill="#ffd34d" />
+          <path d="M38 86V76a12 12 0 0 1 24 0v10z" fill="#ffd34d" />
+        </svg>
+      </a>
+
+      <a class="note n4" id="uchni"
+        href="https://padlet.com/viktorpendalchuk/breakout-room/65XOvBOMXleM4GBQ-oAdpz2J3ekQ5z10R" target="_blank"
+        rel="noopener">
+        <div>
+          <div class="num">Група 4</div>
+          <h2>Самі учні</h2>
+          <p>Чого хочуть діти та підлітки від своєї школи й уроків.</p>
+          <span class="go">Перейти до розділу <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 12h14M13 6l6 6-6 6" />
+            </svg></span>
+        </div>
+        <svg class="ico" viewBox="0 0 100 100" aria-hidden="true">
+          <ellipse cx="50" cy="90" rx="40" ry="5" fill="#000" opacity=".12" />
+          <path d="M24 40h52v42a6 6 0 0 1-6 6H30a6 6 0 0 1-6-6z" fill="#2e9a5a" />
+          <path d="M34 40v-6a16 16 0 0 1 32 0v6" fill="none" stroke="#1f7442" stroke-width="6" />
+          <rect x="32" y="52" width="36" height="16" rx="4" fill="#1f7442" />
+          <rect x="45" y="56" width="10" height="8" rx="2" fill="#ffd34d" />
+          <path d="M70 18l3 6 6 1-4.5 4 1 6-5.5-3-5.5 3 1-6-4.5-4 6-1z" fill="#ffd34d" />
+        </svg>
+      </a>
+    </section>
+    <a class="back" href="#">Показати всі групи</a>
+
+  </main>
+  <script>
+    {
+      const app = document.getElementById('app'), ids = ['ministerstvo', 'suspilstvo', 'batky', 'uchni'];
+      const show = () => {
+        const h = location.hash.slice(1);
+        const on = ids.includes(h);
+        app.classList.toggle('solo', on);
+        document.querySelectorAll('.note').forEach(n => n.classList.toggle('on', n.id === h));
+        if (on) window.scrollTo(0, 0);
+      };
+      window.addEventListener('hashchange', show);
+      document.querySelector('.back').addEventListener('click', e => { e.preventDefault(); history.replaceState(null, '', location.pathname); show(); });
+      document.querySelectorAll('.note').forEach(n => {
+        const fx = document.createElement('span'); fx.className = 'fx'; n.prepend(fx);
+        n.addEventListener('pointerdown', e => {
+          const r = n.getBoundingClientRect(), d = document.createElement('span');
+          d.className = 'rip'; d.style.left = (e.clientX - r.left) + 'px'; d.style.top = (e.clientY - r.top) + 'px';
+          fx.appendChild(d); setTimeout(() => d.remove(), 700);
+        });
+      });
+      show();
+    }
+  </script>
+</body>
+
+</html>
